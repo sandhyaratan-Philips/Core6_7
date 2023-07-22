@@ -52,6 +52,48 @@ namespace ControllersExample.Controllers
             return new FileContentResult(arr, "application/pdf");
         }
 
+        //http://localhost:5157/file-download4?bookid=9
+        [Route("file-download4")]
+        public IActionResult FileDownload4()
+        {
+            if (!Request.Query.ContainsKey("bookId"))
+            {
+                //return new BadRequestResult();
+                
+               // return Content("not a valid book");
+                return BadRequest("not a valid book");
+            }
+            else
+            {
+                byte[] arr = System.IO.File.ReadAllBytes(@"C:\core\file\design-pattern.pdf");
+                return new FileContentResult(arr, "application/pdf");
+            }
+        }
+
+        [Route("Book")]
+        public IActionResult Book()
+        {
+            return RedirectToAction("Books", "Store");//302
+        }
+
+        [Route("Book2")]
+        public IActionResult Book2()
+        {
+            return RedirectToActionPreserveMethod("Books", "Store");//307
+        }
+
+        [Route("Book3")]
+        public IActionResult Book3()
+        {
+            return RedirectToActionPermanent("Books", "Store");//301
+        }
+
+        [Route("Book4")]
+        public IActionResult Book4()
+        {
+            return LocalRedirect($"/store/Books");//301
+        }
+
         [Route("Contact-us/{mobile:regex(^\\d{{10}}$)}")]
         public string Contact()
         {
